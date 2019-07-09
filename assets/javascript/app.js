@@ -1,102 +1,131 @@
-let seconds = 30;
+let secondsRemaining = 25;
 let questionCounter = 0
 
+let timeDisplay = $("#seconds")
 let questionDisplay = $("#questiondisplay")
 let firstAnswer = $("#answer1");
 let secondAnswer = $("#answer2");
 let thirdAnswer = $("#answer3");
 let fourthAnswer = $("#answer4");
+let beginButton = $("#begin")
 
-const displayAnswers = function () {
-questionDisplay.text(this.question)
-firstAnswer.text(this.a1[0])
-secondAnswer.text(this.a2[0])
-thirdAnswer.text(this.a3[0])
-fourthAnswer.text(this.a4[0])
-console.log("done");
-}
-
-
-
-
-
-
+let correctAnswers = 0;
+let incorrectAnswers = 0;
+let unanswered = 0;
 
 let python = {
-question: "What is the Python programming language named after?",
-   a1: ["A horror movie", false],
-   a2: ["A British comedy troupe", true],
-   a3: ["A kind of snake", false],
-   a4: ["An acronym", false],
-   displayAnswers
+    question: "What is the Python programming language named after?",
+    a1: ["A horror movie", false],
+    a2: ["A British comedy troupe", true],
+    a3: ["A kind of snake", false],
+    a4: ["An acronym", false]
+
 };
 
 let bug = {
     question: `Where does the programming term, "bug", get its name from?`,
-    a1: "From how much it bugs the programmer",
-    a2: "From the name of the first computer to have a bug",
-    a3: "The first computer bug was an actual bug",
-    a4: "Many of the earliest programmers liked to ride buggies.",
-    displayAnswers
+    a1: ["From how much it bugs the programmer", false],
+    a2: ["From the name of the first computer to have a bug", false],
+    a3: ["The first computer bug was an actual bug", true],
+    a4: ["Many of the earliest programmers liked to ride buggies.", false]
 
 }
 
 let jName = {
     question: "What was the original name of JavaScript?",
-    a1: "Mocha",
-    a2: "Java",
-    a3: "FrappucinoScript",
-    a4: "JavaCup",
-    displayAnswers
+    a1: ["Mocha", true],
+    a2: ["Java", false],
+    a3: ["FrappucinoScript", false],
+    a4: ["JavaCup", false]
 
 }
 
 let babbage = {
     question: "Who invented what is widely considered the first computer?",
-    a1: "Galileo",
-    a2: "Charles Babbage",
-    a3: "Steve Jobs",
-    a4: "Bill Gates",
-    displayAnswers
+    a1: ["Galileo", false],
+    a2: ["Charles Babbage", true],
+    a3: ["Steve Jobs", false],
+    a4: ["Bill Gates", false]
 
 }
 
 let language = {
     question: "What is the name of the first programming langauge?",
-    a1: "JavaScript",
-    a2: "C",
-    a3: "Visual Basic",
-    a4: "Fortran",
-    displayAnswers
+    a1: ["JavaScript", false],
+    a2: ["C", false],
+    a3: ["Visual Basic", false],
+    a4: ["Fortran", true]
 
 }
 
+
 let questionsArray = [python, bug, jName, babbage, language]
+
+    function decrement () {
+        secondsRemaining--
+        timeDisplay.text(`${secondsRemaining} seconds left`);
+    }
+
+    function displayAnswers () {
+    questionDisplay.text(questionsArray[questionCounter].question)
+    firstAnswer.text(questionsArray[questionCounter].a1[0])
+    secondAnswer.text(questionsArray[questionCounter].a2[0])
+    thirdAnswer.text(questionsArray[questionCounter].a3[0])
+    fourthAnswer.text(questionsArray[questionCounter].a4[0])
+    timeDisplay.text(`${secondsRemaining} seconds left`);
+    setInterval(decrement, 1000)
+    console.log("done");
+}
+
+const correctAnswer = function () {
+    questionDisplay.text("Correct!")
+    setTimeout(displayAnswers, 4000);
+    questionCounter++;
+
+}
+
+const wrongAnswer = function () {
+    questionDisplay.text("Not this time")
+    setTimeout(displayAnswers, 4000);
+    questionCounter++;
+    if (questionCounter === 5) {
+        
+    }
+}
+
+
+beginButton.on("click", displayAnswers)
 
 const checkAnswer = function (obj) {
     let choice = $(this).attr("id")
     if (choice === "answer1") {
         if (questionsArray[questionCounter]["a1"].includes(true)) {
-            //run correct answer
+            correctAnswer();
         } else {
-            //run incorrect answer
+            wrongAnswer();
         }
-;
+
     } else if (choice === "answer2") {
-        console.log(choice);
+        if (questionsArray[questionCounter]["a2"].includes(true)) {
+            correctAnswer();
+        } else {
+            wrongAnswer();
+        }
+
     } else if (choice === "answer3") {
-        console.log(choice);
+        if (questionsArray[questionCounter]["a3"].includes(true)) {
+            correctAnswer();
+        } else {
+            wrongAnswer();
+        }
+        
     } else {
-        console.log(choice);
+        if (questionsArray[questionCounter]["a4"].includes(true)) {
+            correctAnswer();
+        } else {
+            wrongAnswer();
+        }
     }
-
-    // if (obj[answer].includes(true)) {
-    //     console.log(answer)
-    //     return;
-    // } else {
-    //     console.log("Still works, I guess");
-    // } 
-
 
 }
 
@@ -106,7 +135,6 @@ thirdAnswer.on("click", checkAnswer)
 fourthAnswer.on("click", checkAnswer)
 
 
-python.displayAnswers ()
 
 // checkAnswer (python);
 
