@@ -12,6 +12,7 @@ let beginButton = $("#begin")
 let correctAnswers = 0;
 let incorrectAnswers = 0;
 let unanswered = 0;
+let intervalSet = false;
 
 let python = {
     question: "What is the Python programming language named after?",
@@ -61,19 +62,35 @@ let language = {
 
 let questionsArray = [python, bug, jName, babbage, language]
 
-    function decrement () {
+
+const decrement = function () {
+    intervalSet = true;
+    setInterval(() => {
         secondsRemaining--
         timeDisplay.text(`${secondsRemaining} seconds left`);
+        if (secondsRemaining === 0) {
+            alert("Out of Time!");
+            unanswered++;
+            questionCounter++;
+            secondsRemaining = 25;
+            return false;
+        }
+    }, 1000);
+    if (intervalSet === false) {
+        displayAnswers();
     }
 
-    function displayAnswers () {
+}
+
+
+function displayAnswers() {
     questionDisplay.text(questionsArray[questionCounter].question)
     firstAnswer.text(questionsArray[questionCounter].a1[0])
     secondAnswer.text(questionsArray[questionCounter].a2[0])
     thirdAnswer.text(questionsArray[questionCounter].a3[0])
     fourthAnswer.text(questionsArray[questionCounter].a4[0])
     timeDisplay.text(`${secondsRemaining} seconds left`);
-    setInterval(decrement, 1000)
+    decrement();
     console.log("done");
 }
 
@@ -89,7 +106,7 @@ const wrongAnswer = function () {
     setTimeout(displayAnswers, 4000);
     questionCounter++;
     if (questionCounter === 5) {
-        
+
     }
 }
 
@@ -118,7 +135,7 @@ const checkAnswer = function (obj) {
         } else {
             wrongAnswer();
         }
-        
+
     } else {
         if (questionsArray[questionCounter]["a4"].includes(true)) {
             correctAnswer();
