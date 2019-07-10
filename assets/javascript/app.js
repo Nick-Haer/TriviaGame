@@ -12,7 +12,7 @@ let beginButton = $("#begin")
 let correctAnswers = 0;
 let incorrectAnswers = 0;
 let unanswered = 0;
-let intervalSet = false;
+
 
 let python = {
     question: "What is the Python programming language named after?",
@@ -63,24 +63,46 @@ let language = {
 let questionsArray = [python, bug, jName, babbage, language]
 
 
+const correctAnswer = function () {
+    questionDisplay.text("Correct!")
+    setTimeout(displayAnswers, 4000);
+    questionCounter++;
+    correctAnswers++;
+
+}
+
+const wrongAnswer = function () {
+    questionDisplay.text("Not this time")
+    setTimeout(displayAnswers, 4000);
+    questionCounter++;
+    incorrectAnswers++;
+    if (questionCounter === 5) {
+
+    }
+}
+
+const outOfTime = function () {
+
+}
+
+
 const decrement = function () {
-    intervalSet = true;
-    setInterval(() => {
+    let timer = setInterval(() => {
         secondsRemaining--
         timeDisplay.text(`${secondsRemaining} seconds left`);
         if (secondsRemaining === 0) {
             alert("Out of Time!");
             unanswered++;
-            questionCounter++;
             secondsRemaining = 25;
-            return false;
+            clearInterval(timer);
+            outOfTime ()
         }
-    }, 1000);
-    if (intervalSet === false) {
-        displayAnswers();
     }
+        , 1000);
+
 
 }
+
 
 
 function displayAnswers() {
@@ -93,23 +115,6 @@ function displayAnswers() {
     decrement();
     console.log("done");
 }
-
-const correctAnswer = function () {
-    questionDisplay.text("Correct!")
-    setTimeout(displayAnswers, 4000);
-    questionCounter++;
-
-}
-
-const wrongAnswer = function () {
-    questionDisplay.text("Not this time")
-    setTimeout(displayAnswers, 4000);
-    questionCounter++;
-    if (questionCounter === 5) {
-
-    }
-}
-
 
 beginButton.on("click", displayAnswers)
 
@@ -152,6 +157,13 @@ thirdAnswer.on("click", checkAnswer)
 fourthAnswer.on("click", checkAnswer)
 
 
+// start condition
+
+// restart condition
+
+// fix timer issue
+
+// endgame page
 
 // checkAnswer (python);
 
