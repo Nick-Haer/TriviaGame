@@ -12,6 +12,7 @@ let beginButton = $("#begin")
 let correctAnswers = 0;
 let incorrectAnswers = 0;
 let unanswered = 0;
+let timer;
 
 
 let python = {
@@ -64,36 +65,69 @@ let questionsArray = [python, bug, jName, babbage, language]
 
 
 const correctAnswer = function () {
+    console.log(timer)
+    clearInterval(timer)
     questionDisplay.text("Correct!")
-    setTimeout(displayAnswers, 4000);
+    firstAnswer.text("")
+    secondAnswer.text("")
+    thirdAnswer.text("")
+    fourthAnswer.text("")
     questionCounter++;
     correctAnswers++;
+    setTimeout(displayAnswers, 4000);
+    if (questionCounter === 5) {
+        firstAnswer.text(`Finished! Here's Your Scores!`)
+        secondAnswer.text(`Correct Answers: ${correctAnswers}`)
+        thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
+        fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
+            return true;
+        }
 
 }
 
 const wrongAnswer = function () {
+    clearInterval(timer)
     questionDisplay.text("Not this time")
-    setTimeout(displayAnswers, 4000);
+    firstAnswer.text("")
+    secondAnswer.text("")
+    thirdAnswer.text("")
+    fourthAnswer.text("")
     questionCounter++;
     incorrectAnswers++;
     if (questionCounter === 5) {
-
+    firstAnswer.text(`Finished! Here's Your Scores!`)
+    secondAnswer.text(`Correct Answers: ${correctAnswers}`)
+    thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
+    fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
+        return true;
     }
+    setTimeout(displayAnswers, 4000);
 }
 
 const outOfTime = function () {
-
+    questionDisplay.text("KABOOM, time's up!")
+    firstAnswer.text("")
+    secondAnswer.text("")
+    thirdAnswer.text("")
+    fourthAnswer.text("")
+    questionCounter++;
+    unanswered++;
+    setTimeout(displayAnswers, 4000);
+    if (questionCounter === 5) {
+        firstAnswer.text(`Finished! Here's Your Scores!`)
+        secondAnswer.text(`Correct Answers: ${correctAnswers}`)
+        thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
+        fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
+            return true;
+        }
 }
 
 
 const decrement = function () {
-    let timer = setInterval(() => {
+    timer = setInterval(() => {
         secondsRemaining--
-        timeDisplay.text(`${secondsRemaining} seconds left`);
+        timeDisplay.text(`Time remaining: ${secondsRemaining} seconds left`);
         if (secondsRemaining === 0) {
-            alert("Out of Time!");
-            unanswered++;
-            secondsRemaining = 25;
             clearInterval(timer);
             outOfTime ()
         }
@@ -111,12 +145,13 @@ function displayAnswers() {
     secondAnswer.text(questionsArray[questionCounter].a2[0])
     thirdAnswer.text(questionsArray[questionCounter].a3[0])
     fourthAnswer.text(questionsArray[questionCounter].a4[0])
-    timeDisplay.text(`${secondsRemaining} seconds left`);
+    secondsRemaining = 25;
+    timeDisplay.text(`Time remaining: ${secondsRemaining} seconds left`);
     decrement();
     console.log("done");
 }
 
-beginButton.on("click", displayAnswers)
+beginButton.on("click", displayAnswers).on("click", () => beginButton.fadeOut("slow"))
 
 const checkAnswer = function (obj) {
     let choice = $(this).attr("id")
@@ -157,11 +192,8 @@ thirdAnswer.on("click", checkAnswer)
 fourthAnswer.on("click", checkAnswer)
 
 
-// start condition
 
 // restart condition
-
-// fix timer issue
 
 // endgame page
 
