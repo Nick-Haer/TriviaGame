@@ -47,12 +47,21 @@ h1 {
 hr {
     border: solid 2px darkorchid ;
 }
-#begin {
+.clickit{
     box-sizing: border-box;
     width: 150px;
     margin-left: 42%;
     padding: 30px;
     font-size: 2rem;
     display: block;
+    background-color: darkblue;
+    color: darkgrey;
+    text-align: center;
+}
+.clickit:hover {
+    border: solid 5px salmon;
 }
 
+#restart {
+    display: none;
+}

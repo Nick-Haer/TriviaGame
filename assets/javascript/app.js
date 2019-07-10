@@ -7,7 +7,9 @@ let firstAnswer = $("#answer1");
 let secondAnswer = $("#answer2");
 let thirdAnswer = $("#answer3");
 let fourthAnswer = $("#answer4");
-let beginButton = $("#begin")
+
+let beginButton = $("#begin");
+let restartButton = $("#restart");
 
 let correctAnswers = 0;
 let incorrectAnswers = 0;
@@ -34,7 +36,7 @@ let bug = {
 }
 
 let jName = {
-    question: "What was the original name of JavaScript?",
+    question: "What was the original production name of JavaScript?",
     a1: ["Mocha", true],
     a2: ["Java", false],
     a3: ["FrappucinoScript", false],
@@ -63,6 +65,9 @@ let language = {
 
 let questionsArray = [python, bug, jName, babbage, language]
 
+const buttonAppear = function () {
+    restartButton.fadeIn("slow")
+}
 
 const correctAnswer = function () {
     console.log(timer)
@@ -76,11 +81,14 @@ const correctAnswer = function () {
     correctAnswers++;
     setTimeout(displayAnswers, 4000);
     if (questionCounter === 5) {
+        questionDisplay.text("")
         firstAnswer.text(`Finished! Here's Your Scores!`)
         secondAnswer.text(`Correct Answers: ${correctAnswers}`)
         thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
         fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
-            return true;
+        timeDisplay.text(``);
+        buttonAppear()
+        return true;
         }
 
 }
@@ -95,10 +103,13 @@ const wrongAnswer = function () {
     questionCounter++;
     incorrectAnswers++;
     if (questionCounter === 5) {
+    questionDisplay.text("")
     firstAnswer.text(`Finished! Here's Your Scores!`)
     secondAnswer.text(`Correct Answers: ${correctAnswers}`)
     thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
     fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
+    timeDisplay.text(``);
+    buttonAppear()
         return true;
     }
     setTimeout(displayAnswers, 4000);
@@ -114,10 +125,13 @@ const outOfTime = function () {
     unanswered++;
     setTimeout(displayAnswers, 4000);
     if (questionCounter === 5) {
+        questionDisplay.text("")
         firstAnswer.text(`Finished! Here's Your Scores!`)
         secondAnswer.text(`Correct Answers: ${correctAnswers}`)
         thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
         fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
+        timeDisplay.text(``);
+        buttonAppear()
             return true;
         }
 }
@@ -190,6 +204,24 @@ firstAnswer.on("click", checkAnswer)
 secondAnswer.on("click", checkAnswer)
 thirdAnswer.on("click", checkAnswer)
 fourthAnswer.on("click", checkAnswer)
+
+
+
+restartButton.on("click", () => {
+correctAnswers = 0;
+incorrectAnswers = 0;
+unanswered = 0;
+secondsRemaining = 25;
+questionCounter = 0
+questionDisplay.text("")
+firstAnswer.text("")
+secondAnswer.text("")
+thirdAnswer.text("")
+fourthAnswer.text("")
+restartButton.fadeOut("fast")
+beginButton.fadeIn(2000)
+
+})
 
 
 
