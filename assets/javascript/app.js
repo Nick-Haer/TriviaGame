@@ -66,74 +66,70 @@ let language = {
 let questionsArray = [python, bug, jName, babbage, language]
 
 const buttonAppear = function () {
+    restartButton.css("display", "block")
     restartButton.fadeIn("slow")
 }
 
-const correctAnswer = function () {
-    console.log(timer)
+const findRightAnswer = function (obj) {
+    console.log(obj);
+    for (let a in obj) {
+        if (obj[a].includes(true)) {
+            console.log(obj[a][0])
+            firstAnswer.text(`The correct answer is: ${obj[a][0]}`)
+        }
+    }
+}
+
+const inBetweenScreen = function () {
     clearInterval(timer)
-    questionDisplay.text("Correct!")
-    firstAnswer.text("")
     secondAnswer.text("")
     thirdAnswer.text("")
     fourthAnswer.text("")
     questionCounter++;
     correctAnswers++;
     setTimeout(displayAnswers, 4000);
-    if (questionCounter === 5) {
-        questionDisplay.text("")
-        firstAnswer.text(`Finished! Here's Your Scores!`)
-        secondAnswer.text(`Correct Answers: ${correctAnswers}`)
-        thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
-        fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
-        timeDisplay.text(``);
-        buttonAppear()
-        return true;
-        }
-
 }
 
-const wrongAnswer = function () {
-    clearInterval(timer)
-    questionDisplay.text("Not this time")
-    firstAnswer.text("")
-    secondAnswer.text("")
-    thirdAnswer.text("")
-    fourthAnswer.text("")
-    questionCounter++;
-    incorrectAnswers++;
-    if (questionCounter === 5) {
-    questionDisplay.text("")
-    firstAnswer.text(`Finished! Here's Your Scores!`)
+const endGameScreen = function () {
+    questionDisplay.text(`Finished! Here's Your Scores!`)
     secondAnswer.text(`Correct Answers: ${correctAnswers}`)
     thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
     fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
     timeDisplay.text(``);
     buttonAppear()
+}
+
+const correctAnswer = function () {
+    questionDisplay.text("Correct!")
+    firstAnswer.text("")
+    inBetweenScreen();
+
+    if (questionCounter === 5) {
+        endGameScreen()
         return true;
     }
-    setTimeout(displayAnswers, 4000);
+
+}
+
+const wrongAnswer = function () {
+    questionDisplay.text("Not this time")
+    findRightAnswer(questionsArray[questionCounter])
+    inBetweenScreen()
+    if (questionCounter === 5) {
+        endGameScreen()
+        return true;
+    }
+
 }
 
 const outOfTime = function () {
     questionDisplay.text("KABOOM, time's up!")
-    firstAnswer.text("")
-    secondAnswer.text("")
-    thirdAnswer.text("")
-    fourthAnswer.text("")
-    questionCounter++;
-    unanswered++;
-    setTimeout(displayAnswers, 4000);
+    findRightAnswer(questionsArray[questionCounter])
+    inBetweenScreen()
     if (questionCounter === 5) {
-        questionDisplay.text("")
-        firstAnswer.text(`Finished! Here's Your Scores!`)
-        secondAnswer.text(`Correct Answers: ${correctAnswers}`)
-        thirdAnswer.text(`Incorrect Answers: ${incorrectAnswers}`)
-        fourthAnswer.text(`Ran Out of Time: ${unanswered}`)
-        timeDisplay.text(``);
-        buttonAppear()
-            return true;
-        }
+        endGameScreen()
+        return true;
+    }
 }
 
 
@@ -142,8 +138,7 @@ const decrement = function () {
         secondsRemaining--
         timeDisplay.text(`Time remaining: ${secondsRemaining} seconds left`);
         if (secondsRemaining === 0) {
-            clearInterval(timer);
-            outOfTime ()
+            outOfTime()
         }
     }
         , 1000);
@@ -165,7 +160,10 @@ function displayAnswers() {
     console.log("done");
 }
 
-beginButton.on("click", displayAnswers).on("click", () => beginButton.fadeOut("slow"))
+beginButton.on("click", function () {
+    displayAnswers();
+    $(this).fadeOut("slow")
+})
 
 const checkAnswer = function (obj) {
     let choice = $(this).attr("id")
@@ -208,18 +206,18 @@ fourthAnswer.on("click", checkAnswer)
 
 
 restartButton.on("click", () => {
-correctAnswers = 0;
-incorrectAnswers = 0;
-unanswered = 0;
-secondsRemaining = 25;
-questionCounter = 0
-questionDisplay.text("")
-firstAnswer.text("")
-secondAnswer.text("")
-thirdAnswer.text("")
-fourthAnswer.text("")
-restartButton.fadeOut("fast")
-beginButton.fadeIn(2000)
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    unanswered = 0;
+    secondsRemaining = 25;
+    questionCounter = 0
+    questionDisplay.text("")
+    firstAnswer.text("")
+    secondAnswer.text("")
+    thirdAnswer.text("")
+    fourthAnswer.text("")
+    restartButton.fadeOut("fast")
+    beginButton.fadeIn(2000)
 
 })
 

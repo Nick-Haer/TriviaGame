@@ -49,9 +49,9 @@ hr {
 }
 .clickit{
     box-sizing: border-box;
-    width: 150px;
-    margin-left: 42%;
-    padding: 30px;
+    width: 250px;
+    margin: 0 auto;
+    padding: 30px 50px;
     font-size: 2rem;
     display: block;
     background-color: darkblue;
