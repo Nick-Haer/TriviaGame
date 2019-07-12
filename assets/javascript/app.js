@@ -216,8 +216,8 @@ restartButton.on("click", () => {
     secondAnswer.text("")
     thirdAnswer.text("")
     fourthAnswer.text("")
-    restartButton.fadeOut("fast")
-    beginButton.fadeIn(2000)
+    restartButton.fadeOut(100)
+    beginButton.fadeIn(5000)
 
 })
 
