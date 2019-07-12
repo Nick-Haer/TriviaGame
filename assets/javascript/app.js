@@ -87,7 +87,10 @@ const inBetweenScreen = function () {
     fourthAnswer.text("")
     questionCounter++;
     correctAnswers++;
-    setTimeout(displayAnswers, 4000);
+    if (questionCounter < 5) {
+        setTimeout(displayAnswers, 4000);
+    }
+
 }
 
 const endGameScreen = function () {
@@ -105,8 +108,7 @@ const correctAnswer = function () {
     inBetweenScreen();
 
     if (questionCounter === 5) {
-        endGameScreen()
-        return true;
+        setTimeout(endGameScreen, 4000); 
     }
 
 }
@@ -116,8 +118,7 @@ const wrongAnswer = function () {
     findRightAnswer(questionsArray[questionCounter])
     inBetweenScreen()
     if (questionCounter === 5) {
-        endGameScreen()
-        return true;
+        setTimeout(endGameScreen, 4000); 
     }
 
 }
@@ -127,8 +128,7 @@ const outOfTime = function () {
     findRightAnswer(questionsArray[questionCounter])
     inBetweenScreen()
     if (questionCounter === 5) {
-        endGameScreen()
-        return true;
+        setTimeout(endGameScreen, 4000); 
     }
 }
 
