@@ -103,7 +103,6 @@ const inBetweenScreen = function () {
     thirdAnswer.text("")
     fourthAnswer.text("")
     questionCounter++;
-    correctAnswers++;
     if (questionCounter < 5) {
         setTimeout(displayAnswers, 6000);
     }
@@ -121,6 +120,7 @@ const endGameScreen = function () {
 
 const correctAnswer = function () {
     questionDisplay.text("Correct!")
+    correctAnswers++;
     inBetweenScreen();
 
     if (questionCounter === 5) {
@@ -131,6 +131,7 @@ const correctAnswer = function () {
 
 const wrongAnswer = function () {
     questionDisplay.text("Not this time")
+    incorrectAnswers++;
     findRightAnswer(questionsArray[questionCounter])
     inBetweenScreen()
     if (questionCounter === 5) {
@@ -141,6 +142,7 @@ const wrongAnswer = function () {
 
 const outOfTime = function () {
     questionDisplay.text("KABOOM, time's up!")
+    unanswered++;
     findRightAnswer(questionsArray[questionCounter])
     inBetweenScreen()
     if (questionCounter === 5) {
