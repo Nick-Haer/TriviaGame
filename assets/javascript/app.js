@@ -236,6 +236,8 @@ restartButton.on("click", () => {
     secondAnswer.text("")
     thirdAnswer.text("")
     fourthAnswer.text("")
+    displayCorrectAnswer.text("")
+    gifhere.attr("src", "")
     restartButton.fadeOut(100)
     beginButton.fadeIn(5000)
 
