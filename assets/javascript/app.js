@@ -7,6 +7,8 @@ let firstAnswer = $("#answer1");
 let secondAnswer = $("#answer2");
 let thirdAnswer = $("#answer3");
 let fourthAnswer = $("#answer4");
+let gifhere =  $("#gifhere")
+let displayCorrectAnswer = $("#correctanswer")
 
 let beginButton = $("#begin");
 let restartButton = $("#restart");
@@ -22,7 +24,8 @@ let python = {
     a1: ["A horror movie", false],
     a2: ["A British comedy troupe", true],
     a3: ["A kind of snake", false],
-    a4: ["An acronym", false]
+    a4: ["An acronym", false],
+    url: "https://api.giphy.com/v1/gifs/search?api_key=oKCHtfIbY0Dr7JB925gVyaUoyUIT0PzE&q=monty+python+spanish+inquisition&limit=1&offset=0&rating=G&lang=en"
 
 };
 
@@ -31,7 +34,8 @@ let bug = {
     a1: ["From how much it bugs the programmer", false],
     a2: ["From the name of the first computer to have a bug", false],
     a3: ["The first computer bug was an actual bug", true],
-    a4: ["Many of the earliest programmers liked to ride buggies.", false]
+    a4: ["Many of the earliest programmers liked to ride buggies.", false],
+    url: "https://api.giphy.com/v1/gifs/search?api_key=oKCHtfIbY0Dr7JB925gVyaUoyUIT0PzE&q=computer+bug&limit=1&offset=0&rating=G&lang=en"
 
 }
 
@@ -40,7 +44,8 @@ let jName = {
     a1: ["Mocha", true],
     a2: ["Java", false],
     a3: ["FrappucinoScript", false],
-    a4: ["JavaCup", false]
+    a4: ["JavaCup", false],
+    url: "https://api.giphy.com/v1/gifs/search?api_key=oKCHtfIbY0Dr7JB925gVyaUoyUIT0PzE&q=coffee&limit=1&offset=0&rating=G&lang=en"
 
 }
 
@@ -49,7 +54,8 @@ let babbage = {
     a1: ["Galileo", false],
     a2: ["Charles Babbage", true],
     a3: ["Steve Jobs", false],
-    a4: ["Bill Gates", false]
+    a4: ["Bill Gates", false],
+    url: "https://api.giphy.com/v1/gifs/search?api_key=oKCHtfIbY0Dr7JB925gVyaUoyUIT0PzE&q=computing+machine&limit=1&offset=0&rating=G&lang=en"
 
 }
 
@@ -58,7 +64,8 @@ let language = {
     a1: ["JavaScript", false],
     a2: ["C", false],
     a3: ["Visual Basic", false],
-    a4: ["Fortran", true]
+    a4: ["Fortran", true],
+    url: "https://api.giphy.com/v1/gifs/search?api_key=oKCHtfIbY0Dr7JB925gVyaUoyUIT0PzE&q=code+rasputin&limit=1&offset=0&rating=G&lang=en"
 
 }
 
@@ -75,20 +82,30 @@ const findRightAnswer = function (obj) {
     for (let a in obj) {
         if (obj[a].includes(true)) {
             console.log(obj[a][0])
-            firstAnswer.text(`The correct answer is: ${obj[a][0]}`)
+            displayCorrectAnswer.text(`The correct answer is: ${obj[a][0]}`)
         }
     }
 }
 
+
 const inBetweenScreen = function () {
+    $.ajax({
+        url: questionsArray[questionCounter].url,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+        let currentImageUrl = response.data[0].images.fixed_width.url
+        gifhere.attr("src", currentImageUrl)
+    })
     clearInterval(timer)
+    firstAnswer.text("")
     secondAnswer.text("")
     thirdAnswer.text("")
     fourthAnswer.text("")
     questionCounter++;
     correctAnswers++;
     if (questionCounter < 5) {
-        setTimeout(displayAnswers, 4000);
+        setTimeout(displayAnswers, 6000);
     }
 
 }
@@ -104,7 +121,6 @@ const endGameScreen = function () {
 
 const correctAnswer = function () {
     questionDisplay.text("Correct!")
-    firstAnswer.text("")
     inBetweenScreen();
 
     if (questionCounter === 5) {
@@ -154,6 +170,8 @@ function displayAnswers() {
     secondAnswer.text(questionsArray[questionCounter].a2[0])
     thirdAnswer.text(questionsArray[questionCounter].a3[0])
     fourthAnswer.text(questionsArray[questionCounter].a4[0])
+    displayCorrectAnswer.text("")
+    gifhere.attr("src", "")
     secondsRemaining = 25;
     timeDisplay.text(`Time remaining: ${secondsRemaining} seconds left`);
     decrement();
